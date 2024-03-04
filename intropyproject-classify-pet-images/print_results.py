@@ -31,8 +31,8 @@
 #       Notice that this function doesn't to return anything because it  
 #       prints a summary of the results using results_dic and results_stats_dic
 # 
-def print_results(results_dic, results_stats_dic, model, 
-                  print_incorrect_dogs = False, print_incorrect_breed = False):
+def print_results(results_dic, results_stats_dic, model,
+                  print_incorrect_dogs=False, print_incorrect_breed=False):
     """
     Prints summary results on the classification and then prints incorrectly 
     classified dogs and incorrectly classified dog breeds if user indicates 
@@ -61,6 +61,25 @@ def print_results(results_dic, results_stats_dic, model,
                               False doesn't print anything(default) (bool) 
     Returns:
            None - simply printing results.
-    """    
-    None
-                
+    """
+    print("\n\n*** Results Summary for CNN Model Architecture", model.upper(), "***")
+    print("Number of Images: ", results_stats_dic['n_images'])
+    print("Number of Dog Images: ", results_stats_dic['n_dogs_img'])
+    print("Number of 'Not a dog' Images", results_stats_dic['n_notdogs_img'])
+
+    for key, value in results_stats_dic.items():
+        if key.startswith("pct_"):
+            print(key, value)
+
+    if print_incorrect_dogs and ((results_stats_dic['n_correct_dogs'] + results_stats_dic['n_correct_notdogs'])
+                                 != results_stats_dic['n_images']):
+        print("\nINCORRECT Dog/NOT Dog Assignments:")
+        for value in results_dic.values():
+            if value[3] == 0 or value[4] == 0:
+                print("Incorrect dog / not dog assignment:", value[0], value[1])
+
+    if print_incorrect_breed and (results_stats_dic['n_correct_dogs'] != results_stats_dic['n_correct_breed']):
+        print("\nINCORRECT Dog Breed Assignment:")
+        for value in results_dic.values():
+            if value[2] == 0 and value[3] and value[4]:
+                print("Incorrect dog breed assignment:", value[0], value[1])

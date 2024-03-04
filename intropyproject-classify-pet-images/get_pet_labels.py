@@ -17,12 +17,15 @@
 #
 ##
 # Imports python modules
+from multiprocessing.forkserver import read_signed
 from os import listdir
+
 
 # TODO 2: Define get_pet_labels function below please be certain to replace None
 #       in the return statement with results_dic dictionary that you create 
 #       with this function
-# 
+#
+
 def get_pet_labels(image_dir):
     """
     Creates a dictionary of pet labels (results_dic) based upon the filenames 
@@ -36,10 +39,22 @@ def get_pet_labels(image_dir):
      image_dir - The (full) path to the folder of images that are to be
                  classified by the classifier function (string)
     Returns:
-      results_dic - Dictionary with 'key' as image filename and 'value' as a 
+      results_dic - Dictionary with 'label' as image filename and 'value' as a
       List. The list contains for following item:
          index 0 = pet image label (string)
     """
     # Replace None with the results_dic dictionary that you created with this
     # function
-    return None
+    results_dic = dict()
+    for file in listdir(image_dir):
+        label = ""
+        parts = file.lower().split("_")
+        for piece in parts:
+            if piece.isalpha():
+                label += piece + " "
+        label = label.strip()
+        if file in results_dic:
+            print("Warning.  Duplicate file name:", file)
+        else:
+            results_dic[file] = [label]
+    return results_dic
