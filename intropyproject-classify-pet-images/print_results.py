@@ -75,11 +75,11 @@ def print_results(results_dic, results_stats_dic, model,
                                  != results_stats_dic['n_images']):
         print("\nINCORRECT Dog/NOT Dog Assignments:")
         for value in results_dic.values():
-            if value[3] == 0 or value[4] == 0:
-                print("Incorrect dog / not dog assignment:", value[0], value[1])
+            if sum(value[3:]) == 1:
+                print('Pet label: {} : Classifier label {}'.format(value[0], value[1]))
 
     if print_incorrect_breed and (results_stats_dic['n_correct_dogs'] != results_stats_dic['n_correct_breed']):
         print("\nINCORRECT Dog Breed Assignment:")
         for value in results_dic.values():
             if value[2] == 0 and value[3] and value[4]:
-                print("Incorrect dog breed assignment:", value[0], value[1])
+                print('Pet label: {} : Classifier label {}'.format(value[0], value[1]))
